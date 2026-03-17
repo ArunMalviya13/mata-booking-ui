@@ -3,30 +3,40 @@
 import { Alert, Button, Card, CardContent, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
-import { Edit2, Plus, Trash2 } from 'lucide-react';
+import { Edit2, Plus, XCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { deleteBooking, getAllBookings } from '../../lib/utils';
+import { getAllBookings, getCurrentUser, isAdmin, rejectBooking } from '../../lib/utils';
 
-interface Booking {
-  id: string;
-  user_id: string;
-  booking_date: string;
-}
+import type { Booking } from '../../lib/utils';
 
 export default function AdminPanel() {
   const [bookings, setBookings] = useState<Booking[]>([]);
-
   const [loading, setLoading] = useState(true);
+  const [adminLoading, setAdminLoading] = useState(true);
+  const [isAdminUser, setIsAdminUser] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editDialog, setEditDialog] = useState(false);
   const [editingBooking, setEditingBooking] = useState<Booking | null>(null);
   const [newDate, setNewDate] = useState('');
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    loadBookings();
+    const loadAdminData = async () => {
+      const user = await getCurrentUser();
+      if (!user) {
+        router.push('/');
+        return;
+      }
+      const admin = await isAdmin(user.id);
+      setIsAdminUser(admin);
+      setAdminLoading(false);
+      if (admin) loadBookings();
+    };
+    loadAdminData();
   }, []);
 
   const loadBookings = async () => {
@@ -40,16 +50,16 @@ export default function AdminPanel() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this booking?')) return;
-    setDeletingId(id);
+  const handleReject = async (id: string) => {
+    if (!confirm('Reject this booking?')) return;
+    setRejectingId(id);
     try {
-      await deleteBooking(id);
-      setBookings(bookings.filter((b) => b.id !== id));
+      await rejectBooking(id);
+      loadBookings();
     } catch (error) {
-      alert('Delete failed');
+      alert('Reject failed');
     } finally {
-      setDeletingId(null);
+      setRejectingId(null);
     }
   };
 
@@ -95,6 +105,25 @@ export default function AdminPanel() {
     setEditDialog(true);
   };
 
+  if (adminLoading) {
+    return (
+      <Container sx={{ py: 8, textAlign: 'center' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (!isAdminUser) {
+    return (
+      <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
+        <Alert severity="error">
+          <Typography variant="h6">Access Denied</Typography>
+          <Typography>Admin access required.</Typography>
+        </Alert>
+      </Container>
+    );
+  }
+
   if (loading) {
     return (
       <Container sx={{ py: 8, textAlign: 'center' }}>
@@ -125,8 +154,9 @@ export default function AdminPanel() {
                 <TableHead>
                   <TableRow>
                     <TableCell>ID</TableCell>
-                    <TableCell>User ID</TableCell>
+                    <TableCell>User Email</TableCell>
                     <TableCell>Date</TableCell>
+                    <TableCell>Status</TableCell>
                     <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
@@ -136,14 +166,23 @@ export default function AdminPanel() {
                     .map((booking) => (
                       <TableRow key={booking.id} hover>
                         <TableCell>{booking.id.substring(0, 8)}...</TableCell>
-                        <TableCell>{booking.user_id.substring(0, 8)}...</TableCell>
+                        <TableCell>{booking.profile?.email || booking.user_id.substring(0, 8)}...</TableCell>
                         <TableCell>{dayjs(booking.booking_date).format('YYYY-MM-DD')}</TableCell>
                         <TableCell>
+                          <Alert severity={booking.status === 'pending' ? 'warning' : booking.status === 'rejected' ? 'error' : 'success'} variant="filled" sx={{ fontSize: '0.8rem', px: 1 }}>
+                            {booking.status || 'pending'}
+                          </Alert>
+                        </TableCell>
+                        <TableCell>
+                          {booking.status !== 'rejected' && (
+                            <IconButton color="error" onClick={() => handleReject(booking.id)} disabled={rejectingId === booking.id}>
+                              <XCircle size={18}
+                                xlinkTitle='Reject Booking'
+                              />
+                            </IconButton>
+                          )}
                           <IconButton color="primary" onClick={() => handleEdit(booking as Booking)}>
                             <Edit2 size={18} />
-                          </IconButton>
-                          <IconButton color="error" onClick={() => handleDelete(booking.id)} disabled={deletingId === booking.id}>
-                            <Trash2 size={18} />
                           </IconButton>
                         </TableCell>
                       </TableRow>

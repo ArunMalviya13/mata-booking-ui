@@ -36,7 +36,7 @@ export default function ConfirmBooking() {
       }
       setUser(currentUser);
 
-      const { data: bookings } = await supabase.from('bookings').select('booking_date');
+      const { data: bookings } = await supabase.from('bookings').select('booking_date').neq('status', 'rejected');
       setBookedDates(bookings?.map((b: any) => b.booking_date) || []);
 
       if (bookedDates.includes(date)) {

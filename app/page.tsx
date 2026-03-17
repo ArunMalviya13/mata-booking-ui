@@ -25,20 +25,29 @@ import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { getCurrentUser, getAllBookings } from "../lib/utils";
 
 export default function Home() {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [userLoading, setUserLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
-    fetchBookings();
+    const loadInitialData = async () => {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+      setUserLoading(false);
+      fetchBookings();
+    };
+    loadInitialData();
   }, []);
 
   const fetchBookings = async () => {
     setLoading(true);
-    const { data } = await supabase.from("bookings").select("*");
+    const data = await getAllBookings();
     setBookings(data || []);
     setLoading(false);
   };
@@ -50,14 +59,16 @@ export default function Home() {
   const isDateBooked = (date: Dayjs) =>
     bookedDates.includes(date.format("YYYY-MM-DD"));
 
-  const handleDateSelect = (date: Dayjs | null) => setSelectedDate(date);
+  const handleDateSelect = (date: Dayjs | null) => {
+    if (!currentUser) {
+      alert("Please login to select dates");
+      return;
+    }
+    setSelectedDate(date);
+  };
 
   const handleBook = async () => {
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!currentUser) {
       alert("Please login first");
       return;
     }
@@ -109,37 +120,47 @@ export default function Home() {
               Select Pooja Date
             </Typography>
 
-            {loading ? (
+            {userLoading ? (
               <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
                 <CircularProgress />
               </Box>
-            ) : (
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateCalendar
-                  value={selectedDate}
-                  onChange={handleDateSelect}
-                  disablePast
-                  slots={{
-                    day: (props: PickersDayProps) => {
-                      const isBooked = isDateBooked(props.day);
+            ) : currentUser ? (
+              loading ? (
+                <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateCalendar
+                    value={selectedDate}
+                    onChange={handleDateSelect}
+                    disablePast
+                    slots={{
+                      day: (props: PickersDayProps) => {
+                        const isBooked = isDateBooked(props.day);
 
-                      return (
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                          <PickersDay
-                            {...props}
-                            sx={{
-                              ...(props.sx || {}),
-                              backgroundColor: isBooked ? "error.main" : undefined,
-                              color: isBooked ? "white" : undefined,
-                              fontWeight: isBooked ? "bold" : "normal",
-                            }}
-                          />
-                        </motion.div>
-                      );
-                    },
-                  }}
-                />
-              </LocalizationProvider>
+                        return (
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <PickersDay
+                              {...props}
+                              sx={{
+                                ...(props.sx || {}),
+                                backgroundColor: isBooked ? "error.main" : undefined,
+                                color: isBooked ? "white" : undefined,
+                                fontWeight: isBooked ? "bold" : "normal",
+                              }}
+                            />
+                          </motion.div>
+                        );
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
+              )
+            ) : (
+              <Alert severity="info">
+                Please <Button onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>login</Button> to book a pooja slot.
+              </Alert>
             )}
           </CardContent>
         </Card>
@@ -157,7 +178,7 @@ export default function Home() {
             variant="contained"
             size="large"
             onClick={handleBook}
-            disabled={!selectedDate || loading}
+            disabled={!currentUser || !selectedDate || loading}
             startIcon={<Calendar />}
             sx={{ minWidth: 200, fontSize: "1.1rem" }}
           >

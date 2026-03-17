@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Typography, Container, Button, Card, CardContent, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Alert, CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { getCurrentUser, getUserBookings, deleteBooking } from '../../lib/utils';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
@@ -86,16 +86,27 @@ export default function MyBookings() {
                       <ListItem key={booking.id} divider>
                         <ListItemText
                           primary={`Pooja on ${dayjs(booking.booking_date).format('MMMM DD, YYYY')}`}
-                          secondary={`ID: ${booking.id.substring(0, 8)}...`}
+                          secondary={
+                            <>
+                              ID: {booking.id.substring(0, 8)}...
+                              <br />
+                              Status: <strong>{booking.status || 'pending'}</strong>
+                            </>
+                          }
                         />
                         <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            onClick={() => handleCancel(booking.id)}
-                            disabled={deletingId === booking.id}
-                          >
-                            <Trash2 size={20} color="error.main" />
-                          </IconButton>
+                          {booking.status === 'pending' && (
+                            <IconButton
+                              edge="end"
+                              onClick={() => handleCancel(booking.id)}
+                              disabled={deletingId === booking.id}
+                            >
+                              <Trash2 size={20} color="error.main" />
+                            </IconButton>
+                          )}
+                          {booking.status === 'pending' && <Clock size={20} color="warning.main" />}
+                          {booking.status === 'confirmed' && <CheckCircle size={20} color="success.main" />}
+                          {booking.status === 'rejected' && <XCircle size={20} color="error.main" />}
                         </ListItemSecondaryAction>
                       </ListItem>
                     ))}
