@@ -18,15 +18,19 @@ export default function ConfirmBooking() {
   const [user, setUser] = useState<any>(null);
   const [bookedDates, setBookedDates] = useState<string[]>([]);
 
+
   useEffect(() => {
-    const date = params.date as string;
-    if (date) {
-      setBookingDate(date);
-      loadData(date);
-    } else {
+    const dateStr = params.date as string;
+    const date = dayjs(dateStr);
+    if (!date.isValid() || date.isBefore(dayjs()) || date.isAfter(dayjs().add(5, 'year'))) {
+      toast.error('Invalid booking date. Please select a future date.');
       router.push('/');
+      return;
     }
-  }, [params.date]);
+    setBookingDate(dateStr);
+    loadData(dateStr);
+  }, [params.date, router]);
+
 
   const loadData = async (date: string) => {
     try {
@@ -59,11 +63,13 @@ export default function ConfirmBooking() {
       await createBooking(user.id, bookingDate);
       toast.success('Booking confirmed! Check My Bookings.');
       router.push('/my-bookings');
-    } catch (error) {
-      toast.error('Booking failed. Try again.');
+
+    } catch (error: any) {
+      toast.error(error.message || 'Booking failed. Try again.');
     } finally {
       setLoading(false);
     }
+
   };
 
   if (!bookingDate) {
