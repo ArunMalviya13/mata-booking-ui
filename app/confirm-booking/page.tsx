@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Box, Typography, Container, Button, Card, CardContent, CircularProgress, Alert } from '@mui/material';
+import { Alert, Box, Button, Card, CardContent, CircularProgress, Container, Typography } from '@mui/material';
+import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 import { Calendar, CheckCircle } from 'lucide-react';
-import { supabase } from '../../../lib/supabaseClient';
-import dayjs from 'dayjs';
-import { getCurrentUser, createBooking } from '../../../lib/utils';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { supabase } from '../../lib/supabaseClient';
+import { createBooking, getCurrentUser } from '../../lib/utils';
 
 export default function ConfirmBooking() {
   const params = useParams();
@@ -68,7 +68,7 @@ export default function ConfirmBooking() {
   }
 
   return (
-    <Container maxWidth=\"sm\">
+    <Container maxWidth="sm">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -77,27 +77,27 @@ export default function ConfirmBooking() {
         <Box sx={{ textAlign: 'center', mt: 8 }}>
           <Card sx={{ p: 6, boxShadow: 'var(--shadow-xl)' }}>
             <CardContent>
-              <Typography variant=\"h3\" gutterBottom color=\"primary.main\">
-                <CheckCircle style={{ verticalAlign: 'middle', mr: 2, fontSize: 48 }} />
+              <Typography variant="h3" gutterBottom color="primary.main">
+                <CheckCircle style={{ verticalAlign: 'middle', marginRight: 2, fontSize: 48 }} />
                 Confirm Booking
               </Typography>
-              <Typography variant=\"h4\" gutterBottom>
+              <Typography variant="h4" gutterBottom>
                 Pooja Slot
               </Typography>
-              <Alert severity=\"success\" sx={{ mb: 4, fontSize: '1.2rem' }}>
-                <Calendar style={{ mr: 1 }} />
+              <Alert severity="success" sx={{ mb: 4, fontSize: '1.2rem' }}>
+                <Calendar style={{ marginRight: 1 }} />
                 {dayjs(bookingDate).format('dddd, MMMM DD, YYYY')}
               </Alert>
 
               {user && (
-                <Typography variant=\"body1\" sx={{ mb: 4, fontWeight: 'medium' }}>
+                <Typography variant="body1" sx={{ mb: 4, fontWeight: 'medium' }}>
                   For: {user.email}
                 </Typography>
               )}
 
               <Button
-                variant=\"contained\"
-                size=\"large\"
+                variant="contained"
+                size="large"
                 onClick={handleConfirm}
                 disabled={loading || !user}
                 fullWidth
@@ -107,7 +107,7 @@ export default function ConfirmBooking() {
               </Button>
 
               <Button
-                variant=\"outlined\"
+                variant="outlined"
                 fullWidth
                 sx={{ mt: 2 }}
                 onClick={() => router.push('/')}
