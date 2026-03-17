@@ -27,8 +27,27 @@ export async function getCurrentUser(): Promise<User | null> {
   }
 }
 
+// Helper: Check if bookings table exists
+async function ensureBookingsTable(): Promise<void> {
+  try {
+    const { error } = await supabase
+      .from('bookings')
+      .select('id')
+      .limit(1)
+      .maybeSingle();
+    if (error && error.code === '42P01') {
+      throw new Error('Bookings table not found. Please run supabase-schema.sql in your Supabase dashboard.');
+    }
+  } catch (tableError: any) {
+    if (tableError.message.includes('Bookings table not found')) {
+      throw tableError;
+    }
+    throw new Error(`Database connection issue: ${tableError.message}`);
+  }
+}
 
 export async function getUserBookings(userId: string): Promise<Booking[]> {
+  await ensureBookingsTable();
   const { data, error } = await supabase
     .from('bookings')
     .select('*')
@@ -41,6 +60,7 @@ export async function getUserBookings(userId: string): Promise<Booking[]> {
 
 
 export async function rejectBooking(bookingId: string) {
+  await ensureBookingsTable();
   const { error } = await supabase
     .from('bookings')
     .update({ status: 'rejected' })
@@ -50,6 +70,7 @@ export async function rejectBooking(bookingId: string) {
 }
 
 export async function deleteBooking(bookingId: string) {
+  await ensureBookingsTable();
   const { error } = await supabase
     .from('bookings')
     .delete()
@@ -59,6 +80,7 @@ export async function deleteBooking(bookingId: string) {
 
 
 export async function createBooking(userId: string, bookingDate: string) {
+  await ensureBookingsTable();
   const { error } = await supabase
     .from('bookings')
     .insert({
@@ -83,6 +105,7 @@ export async function createBooking(userId: string, bookingDate: string) {
 
 
 export async function getAllBookings(): Promise<Booking[]> {
+  await ensureBookingsTable();
   try {
       const { data, error } = await supabase
       .from('bookings')

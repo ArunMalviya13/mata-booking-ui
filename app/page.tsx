@@ -63,10 +63,14 @@ export default function Home() {
       setLoading(true);
       const data = await getAllBookings();
       setBookings(data || []);
-    } catch (e) {
-      console.error('Bookings fetch failed:', e);
+    } catch (e: any) {
+      if (e.message && e.message.includes('Bookings table not found')) {
+        toast.error('Calendar data unavailable. Database setup in progress.', { duration: 4000 });
+      } else {
+        console.error('Bookings fetch failed:', e);
+        setAuthError(true);
+      }
       setBookings([]);
-      setAuthError(true); // Trigger guest-like mode
     } finally {
       setLoading(false);
     }

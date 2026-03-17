@@ -41,7 +41,11 @@ export default function ConfirmBooking() {
       const { data: bookings } = await supabase.from('bookings').select('booking_date').neq('status', 'rejected');
       setBookedDates(bookings?.map((b: any) => b.booking_date) || []);
       // Moved booked check to handleConfirm to avoid stale state
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message.includes('Bookings table not found')) {
+        toast.error('Database setup required. Please contact administrator.');
+        return;
+      }
       console.error(error);
     }
   };

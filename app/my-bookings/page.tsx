@@ -29,8 +29,11 @@ export default function MyBookings() {
       setUser(currentUser);
       const userBookings = await getUserBookings(currentUser.id);
       setBookings(userBookings);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading bookings:', error);
+      if (error.message?.includes('Bookings table not found')) {
+        // Don't show generic error - table missing is expected until setup
+      }
     } finally {
       setLoading(false);
     }
