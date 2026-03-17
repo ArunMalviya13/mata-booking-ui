@@ -38,11 +38,7 @@ export default function ConfirmBooking() {
 
       const { data: bookings } = await supabase.from('bookings').select('booking_date').neq('status', 'rejected');
       setBookedDates(bookings?.map((b: any) => b.booking_date) || []);
-
-      if (bookedDates.includes(date)) {
-        toast.error('This date is already booked!');
-        router.push('/');
-      }
+      // Moved booked check to handleConfirm to avoid stale state
     } catch (error) {
       console.error(error);
     }
@@ -50,6 +46,13 @@ export default function ConfirmBooking() {
 
   const handleConfirm = async () => {
     if (!user) return;
+
+    // Check if date already booked
+    if (bookedDates.includes(bookingDate)) {
+      toast.error('This date is already booked!');
+      router.push('/');
+      return;
+    }
 
     setLoading(true);
     try {

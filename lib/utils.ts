@@ -18,8 +18,13 @@ export interface Profile {
 }
 
 export async function getCurrentUser(): Promise<User | null> {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+  } catch (e) {
+    console.error('getCurrentUser error:', e);
+    return null;
+  }
 }
 
 export async function getUserBookings(userId: string): Promise<Booking[]> {
@@ -65,15 +70,24 @@ export async function createBooking(userId: string, bookingDate: string) {
 }
 
 export async function getAllBookings(): Promise<Booking[]> {
-  const { data, error } = await supabase
-    .from('bookings')
-    .select(`
-      *,
-      profile:profiles!user_id(role, email)
-    `)
-    .order('booking_date', { ascending: false });
-  if (error) throw error;
-  return data as Booking[];
+  try {
+      const { data, error } = await supabase
+      .from('bookings')
+      .select(`
+        *,
+        profile:profiles(role, email)
+      `)
+      .order('booking_date', { ascending: false })
+      .limit(100);
+    if (error) {
+      console.error('getAllBookings error details:', error);
+      throw error;
+    }
+    return data as Booking[] || [];
+  } catch (e) {
+    console.error('getAllBookings error:', e);
+    return [];
+  }
 }
 
 export async function getProfile(userId: string): Promise<Profile | null> {
