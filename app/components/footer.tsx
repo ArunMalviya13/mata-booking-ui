@@ -1,7 +1,7 @@
 ﻿"use client";
 
-import { Box, Container, Divider, Link, Stack, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Box, Container, Divider, Link, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
 export default function Footer() {
@@ -18,23 +18,23 @@ export default function Footer() {
       }}
 
     >
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '2px',
-          background: 'linear-gradient(90deg, transparent, rgba(31, 166, 178, 0.6), transparent)'
-        }} />
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '2px',
+        background: 'linear-gradient(90deg, transparent, rgba(31, 166, 178, 0.6), transparent)'
+      }} />
 
       <Container maxWidth={false} disableGutters sx={{ px: { xs: 2, md: 6 }, py: { xs: 6, md: 8 } }}>
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 5, md: 8 }} sx={{ mb: 5 }}>
           <Box sx={{ flex: 1, minWidth: 220 }}>
             <Typography variant="h5" fontWeight={700} color="var(--footer-title)" gutterBottom>
-              ðŸ›• Mata Pooja Booking
+              Mata Pooja Booking
             </Typography>
             <Typography variant="body1" color="var(--footer-text)" sx={{ fontFamily: "'Noto Sans Devanagari', 'serif'", mb: 2 }}>
-              à¤œà¤¯ à¤®à¤¾à¤¤à¤¾ à¤¦à¥€ ðŸ™ | Book Divine Blessings
+              जय माता दी | Book Divine Blessings
             </Typography>
             <Typography variant="body2" color="var(--footer-text)">
               A premium scheduling experience for devotees, built to streamline temple rituals, confirmations, and guest access.
@@ -64,12 +64,12 @@ export default function Footer() {
               <Link href="/about" color="var(--footer-text)" variant="body2" underline="hover">
                 About the Temple
               </Link>
-              <Link href="/privacy" color="var(--footer-text)" variant="body2" underline="hover">
+              <Typography variant="body2" color="var(--footer-text)">
                 Privacy Policy
-              </Link>
-              <Link href="/terms" color="var(--footer-text)" variant="body2" underline="hover">
+              </Typography>
+              <Typography variant="body2" color="var(--footer-text)">
                 Terms of Service
-              </Link>
+              </Typography>
             </Stack>
           </Box>
 
@@ -90,7 +90,7 @@ export default function Footer() {
 
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', md: 'center' }} justifyContent="space-between">
           <Typography variant="body2" color="var(--footer-text)">
-            Â© 2026 à¤®à¤¾à¤¤à¤¾ à¤ªà¥‚à¤œà¤¾ à¤¬à¥à¤•à¤¿à¤‚à¤— | Mata Pooja Booking. All rights reserved.
+            © 2026 माता पूजा बुकिंग | Mata Pooja Booking. All rights reserved.
           </Typography>
           <Typography variant="body2" color="var(--footer-text)">
             Made with <FavoriteIcon sx={{ fontSize: 16, color: 'var(--brand-rose)', verticalAlign: 'middle', mx: 0.5 }} /> for temple bookings
@@ -98,7 +98,7 @@ export default function Footer() {
         </Stack>
 
         <Typography variant="caption" color="var(--footer-text)" sx={{ mt: 3, display: 'block' }}>
-          Temple bookings made simple âœ¨
+          Temple bookings made simple
         </Typography>
       </Container>
     </motion.footer>

@@ -7,16 +7,16 @@ import {
   Card,
   Container,
   Divider,
+  Grid,
   Stack,
   TextField,
   Typography,
-  Grid
 } from "@mui/material";
 import { motion } from "framer-motion";
 
 export default function ContactPage() {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className="section-padding">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,7 +33,7 @@ export default function ContactPage() {
         </Box>
 
         <Grid container spacing={4} alignItems="stretch">
-          <Grid item xs={12} md={5}>
+          <Grid size={{ xs: 12, md: 5 }}>
             <Card className="glass-card" sx={{ p: { xs: 3, md: 4 }, height: "100%" }}>
               <Stack spacing={2}>
                 <Typography variant="h5" fontWeight={700} color="primary.main">
@@ -84,7 +84,7 @@ export default function ContactPage() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={7}>
+          <Grid size={{ xs: 12, md: 7 }}>
             <Card className="glass-card" sx={{ p: { xs: 3, md: 4 } }}>
               <Typography variant="h5" fontWeight={700} color="secondary.main" gutterBottom>
                 Enquiry Form
@@ -95,21 +95,21 @@ export default function ContactPage() {
 
               <Box component="form">
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <TextField
                       fullWidth
                       label="Full Name"
                       placeholder="Enter your full name"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <TextField
                       fullWidth
                       label="Mobile"
                       placeholder="98XXXXXXXX"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField
                       fullWidth
                       label="Email"
@@ -117,14 +117,14 @@ export default function ContactPage() {
                       placeholder="your@email.com"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField
                       fullWidth
                       label="Pooja Type"
                       placeholder="Navratri / Durga / Special"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <TextField
                       fullWidth
                       label="Special Requirements"

@@ -1,10 +1,10 @@
 "use client";
 
-import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Container, IconButton, List, ListItem, ListItemSecondaryAction, Typography } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Container, IconButton, List, ListItem, ListItemSecondaryAction, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -64,7 +64,7 @@ export default function MyBookings() {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: [3, 4, 5, 6] }}>
+    <Container maxWidth="md" className="section-padding">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

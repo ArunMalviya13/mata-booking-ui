@@ -1,22 +1,22 @@
 ﻿"use client";
 
 import { Group, TempleHindu } from "@mui/icons-material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import {
   Box,
   Button,
   Card,
   Container,
   Divider,
+  Grid,
   Stack,
   Typography,
-  Grid
 } from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { motion } from "framer-motion";
 
 export default function AboutPage() {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className="section-padding">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,7 +33,7 @@ export default function AboutPage() {
         </Box>
 
         <Grid container spacing={4} sx={{ mb: { xs: 4, md: 6 } }}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card className="glass-card" sx={{ p: { xs: 3, md: 4 }, height: "100%" }}>
               <Stack spacing={2}>
                 <Stack direction="row" spacing={2} alignItems="center">
@@ -56,7 +56,7 @@ export default function AboutPage() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card className="glass-card" sx={{ p: { xs: 3, md: 4 }, height: "100%" }}>
               <Stack spacing={2}>
                 <Stack direction="row" spacing={2} alignItems="center">

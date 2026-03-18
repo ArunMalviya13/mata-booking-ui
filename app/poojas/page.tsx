@@ -11,9 +11,9 @@ import {
   CardMedia,
   Chip,
   Container,
+  Grid,
   Typography,
 } from "@mui/material";
-import Grid from "@mui/material/GridLegacy";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -121,7 +121,7 @@ export default function PoojasPage() {
 
         <Grid container spacing={4}>
           {poojas.map((pooja, index) => (
-            <Grid xs={12} sm={6} md={4} key={pooja.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={pooja.id}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}

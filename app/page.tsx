@@ -120,7 +120,7 @@ export default function Home() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Stack spacing={3} sx={{ px: { xs: 1, md: 0 } }}>
               <Typography
                 className="heading-1 hero-title"
@@ -172,13 +172,13 @@ export default function Home() {
             </Stack>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <Card className="glass-card" sx={{ p: { xs: 1, md: 2 } }}>
+              <Card className="glass-card">
                 <CardContent>
                   <Typography variant="h4" gutterBottom textAlign="center">
                     <CalendarTodayIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: 28 }} />
