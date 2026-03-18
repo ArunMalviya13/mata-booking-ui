@@ -89,7 +89,7 @@ export default function Header() {
     }}>
       <Toolbar sx={{ justifyContent: 'space-between', gap: 1, px: { xs: 2, md: 6 } }}>
         <Typography variant="h6" component={Link} href="/" sx={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>
-          🛕 Mata Booking
+          🛕 Mata Pooja Booking
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>

@@ -26,7 +26,7 @@ const poojas = [
     duration: "9 Days",
     price: "₹5,100",
     benefits: "Protection, Prosperity, Spiritual Awakening",
-    image: "/diya.svg",
+    image: "/images/Navratri.jpg",
   },
   {
     id: "durga",
@@ -36,7 +36,7 @@ const poojas = [
     duration: "2 Hours",
     price: "₹2,500",
     benefits: "Obstacle Removal, Courage, Success",
-    image: "/temple-bell.svg",
+    image: "/images/Durga.png",
   },
   {
     id: "lakshmi",
@@ -46,7 +46,7 @@ const poojas = [
     duration: "1.5 Hours",
     price: "₹1,800",
     benefits: "Wealth, Harmony, Business Growth",
-    image: "/lotus.svg",
+    image: "/images/Lakshmi.jpg",
   },
   {
     id: "saraswati",
@@ -56,7 +56,7 @@ const poojas = [
     duration: "1 Hour",
     price: "₹1,200",
     benefits: "Knowledge, Creativity, Academic Success",
-    image: "/book.svg",
+    image: "/images/Saraswati.jpg",
   },
   {
     id: "ganesh",
@@ -66,7 +66,7 @@ const poojas = [
     duration: "45 Min",
     price: "₹900",
     benefits: "New Beginnings, Success in Ventures",
-    image: "/ganesh.svg",
+    image: "/images/Ganesh.jpg",
   },
   {
     id: "special",
@@ -76,7 +76,7 @@ const poojas = [
     duration: "Custom",
     price: "Contact Us",
     benefits: "Tailored Blessings",
-    image: "/custom.svg",
+    image: "/images/Special.jpg",
   },
 ];
 
