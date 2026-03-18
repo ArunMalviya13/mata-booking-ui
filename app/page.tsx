@@ -113,7 +113,10 @@ export default function Home() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: [3, 4, 5, 6] }}>
+    <Container
+      maxWidth="lg"
+      sx={{ py: [6, 8, 10, 12] }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}

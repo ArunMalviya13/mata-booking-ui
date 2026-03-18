@@ -108,8 +108,12 @@ export default function Header() {
   );
 
   return (
-    <AppBar position="static"
+    <AppBar
+      position="fixed"
       sx={{
+        top: 0,
+        left: 0,
+        right: 0,
         background: 'var(--nav-gradient)',
         boxShadow: 'var(--shadow-lg)',
         zIndex: 1200
