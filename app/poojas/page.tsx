@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -26,7 +26,7 @@ const poojas = [
     duration: "9 Days",
     price: "₹5,100",
     benefits: "Protection, Prosperity, Spiritual Awakening",
-    image: "/diya.svg", // Placeholder - add to public
+    image: "/diya.svg",
   },
   {
     id: "durga",
@@ -84,48 +84,36 @@ export default function PoojasPage() {
   const router = useRouter();
 
   const handleBook = (poojaId: string) => {
-    // Store pooja selection in localStorage/session, redirect to date picker
     sessionStorage.setItem("selectedPooja", poojaId);
     router.push("/");
   };
 
   return (
-    <Container maxWidth="lg" className="divine-hero section-padding">
+    <Container maxWidth="lg" className="section-padding">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Box sx={{ textAlign: "center", mb: 12, px: { xs: 2, md: 0 } }}>
-          <Typography
-            className="heading-1"
-            gutterBottom
-            component="h1"
-            sx={{
-              background: "linear-gradient(45deg, var(--saffron), var(--gold))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: "-0.025em",
-              mb: 4
-            }}
-          >
-            🛕 पूजा सेवाएँ | Pooja Services
+        <Box sx={{ textAlign: "center", mb: 8, px: { xs: 2, md: 0 } }}>
+          <Typography className="heading-1 hero-title" gutterBottom component="h1">
+            🛕 पूजा सेवाएं | Pooja Services
           </Typography>
           <Typography
-            variant="h4"
-            color="text.primary"
+            variant="h5"
+            className="hero-subtitle"
             sx={{
-              mb: 8,
+              mb: 6,
               fontWeight: 300,
               maxWidth: "700px",
               mx: "auto",
               lineHeight: 1.5,
-              fontSize: { xs: '1.5rem', md: '1.875rem', lg: '2.25rem' }
+              fontSize: { xs: '1.3rem', md: '1.6rem', lg: '1.85rem' }
             }}
           >
             Choose from our sacred rituals blessed by experienced priests
             <br />
-            <span style={{ color: 'var(--temple-red)', fontFamily: "'Noto Sans Devanagari', serif" }}>
+            <span style={{ fontFamily: "'Noto Sans Devanagari', serif" }}>
               <em>"जय माता दी" 🙏</em>
             </span>
           </Typography>
@@ -139,39 +127,29 @@ export default function PoojasPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card
-                  sx={{
-                    height: "100%",
-                    transition: "all 0.3s ease",
-                    boxShadow: "0 10px 30px rgba(255, 153, 51, 0.2)",
-                    "&:hover": {
-                      transform: "translateY(-10px)",
-                      boxShadow: "0 20px 40px rgba(255, 215, 0, 0.4)",
-                    },
-                  }}
-                >
+                <Card className="glass-card" sx={{ height: "100%", transition: "all 0.3s ease" }}>
                   <CardMedia
                     component="img"
                     height="200"
                     image={pooja.image || "/placeholder-temple.jpg"}
                     alt={pooja.title}
-                    sx={{ background: "linear-gradient(45deg, var(--saffron), var(--maroon))", objectFit: "cover" }}
+                    sx={{ objectFit: "cover" }}
                   />
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="h3" fontWeight="bold" color="primary.main">
+                    <Typography gutterBottom variant="h6" component="h3" fontWeight={700} color="text.primary">
                       {pooja.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" mb={2}>
                       {pooja.subtitle}
                     </Typography>
-                    <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.6 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
                       {pooja.description}
                     </Typography>
                     <Box sx={{ display: "flex", gap: 1, mb: 2, flexWrap: "wrap" }}>
                       <Chip icon={<AccessTimeIcon fontSize="small" />} label={pooja.duration} variant="outlined" color="primary" />
                       <Chip icon={<AttachMoneyIcon fontSize="small" />} label={pooja.price} color="secondary" />
                     </Box>
-                    <Typography variant="body2" color="success.main" fontWeight="medium">
+                    <Typography variant="body2" color="text.secondary" fontWeight={600}>
                       Benefits: {pooja.benefits}
                     </Typography>
                     <Button
@@ -190,8 +168,8 @@ export default function PoojasPage() {
           ))}
         </Grid>
 
-        <Box sx={{ textAlign: "center", mt: 8 }}>
-          <Typography variant="h6" color="text.secondary" sx={{ fontFamily: "'Noto Sans Devanagari'" }}>
+        <Box sx={{ textAlign: "center", mt: 6 }}>
+          <Typography variant="body1" color="text.secondary" sx={{ fontFamily: "'Noto Sans Devanagari'" }}>
             Can't find what you need? Contact us for custom poojas.
           </Typography>
         </Box>

@@ -83,11 +83,11 @@ export default function Header() {
 
   return (
     <AppBar position="static" sx={{
-      background: 'linear-gradient(90deg, hsl(var(--blue)), hsl(var(--blue-light)))',
-      boxShadow: 'var(--shadow-xl)',
+      background: 'var(--nav-gradient)',
+      boxShadow: 'var(--shadow-lg)',
       zIndex: 1200
     }}>
-      <Toolbar sx={{ justifyContent: 'space-between', gap: 1 }}>
+      <Toolbar sx={{ justifyContent: 'space-between', gap: 1, px: { xs: 2, md: 6 } }}>
         <Typography variant="h6" component={Link} href="/" sx={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>
           🛕 Mata Booking
         </Typography>
@@ -152,4 +152,6 @@ export default function Header() {
     </AppBar>
   );
 }
+
+
 

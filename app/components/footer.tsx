@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { Box, Container, Divider, Link, Typography } from '@mui/material';
+import { Box, Container, Divider, Link, Stack, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { motion } from 'framer-motion';
 
@@ -12,7 +12,7 @@ export default function Footer() {
       transition={{ duration: 0.8 }}
       className="mt-auto"
       style={{
-        background: 'linear-gradient(180deg, hsl(var(--red)), hsl(var(--background)))',
+        background: 'var(--footer-bg)',
         position: 'relative',
         overflow: 'hidden'
       }}
@@ -24,49 +24,81 @@ export default function Footer() {
           left: 0,
           right: 0,
           height: '2px',
-          background: 'linear-gradient(90deg, transparent, var(--glow-red), transparent)'
+          background: 'linear-gradient(90deg, transparent, rgba(31, 166, 178, 0.6), transparent)'
         }} />
 
-      <Container maxWidth="lg" sx={{ py: 6, textAlign: 'center' }}>
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h6" fontWeight="bold" color="primary.main" gutterBottom>
-            🛕 Mata Pooja Booking
+      <Container maxWidth={false} disableGutters sx={{ px: { xs: 2, md: 6 }, py: { xs: 6, md: 8 } }}>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 5, md: 8 }} sx={{ mb: 5 }}>
+          <Box sx={{ flex: 1, minWidth: 220 }}>
+            <Typography variant="h5" fontWeight={700} color="var(--footer-title)" gutterBottom>
+              ðŸ›• Mata Pooja Booking
+            </Typography>
+            <Typography variant="body1" color="var(--footer-text)" sx={{ fontFamily: "'Noto Sans Devanagari', 'serif'", mb: 2 }}>
+              à¤œà¤¯ à¤®à¤¾à¤¤à¤¾ à¤¦à¥€ ðŸ™ | Book Divine Blessings
+            </Typography>
+            <Typography variant="body2" color="var(--footer-text)">
+              A premium scheduling experience for devotees, built to streamline temple rituals, confirmations, and guest access.
+            </Typography>
+          </Box>
+
+          <Box sx={{ flex: 1, minWidth: 200 }}>
+            <Typography variant="subtitle1" fontWeight={700} gutterBottom color="var(--footer-title)">
+              Services
+            </Typography>
+            <Stack spacing={1}>
+              <Typography variant="body2" color="var(--footer-text)">Pooja slot booking</Typography>
+              <Typography variant="body2" color="var(--footer-text)">Real-time availability</Typography>
+              <Typography variant="body2" color="var(--footer-text)">Secure confirmations</Typography>
+              <Typography variant="body2" color="var(--footer-text)">My bookings dashboard</Typography>
+            </Stack>
+          </Box>
+
+          <Box sx={{ flex: 1, minWidth: 200 }}>
+            <Typography variant="subtitle1" fontWeight={700} gutterBottom color="var(--footer-title)">
+              Support
+            </Typography>
+            <Stack spacing={1}>
+              <Link href="/contact" color="var(--footer-text)" variant="body2" underline="hover">
+                Contact Support
+              </Link>
+              <Link href="/about" color="var(--footer-text)" variant="body2" underline="hover">
+                About the Temple
+              </Link>
+              <Link href="/privacy" color="var(--footer-text)" variant="body2" underline="hover">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" color="var(--footer-text)" variant="body2" underline="hover">
+                Terms of Service
+              </Link>
+            </Stack>
+          </Box>
+
+          <Box sx={{ flex: 1, minWidth: 200 }}>
+            <Typography variant="subtitle1" fontWeight={700} gutterBottom color="var(--footer-title)">
+              Temple Info
+            </Typography>
+            <Stack spacing={1}>
+              <Typography variant="body2" color="var(--footer-text)">Daily timings: 6:00 AM - 9:00 PM</Typography>
+              <Typography variant="body2" color="var(--footer-text)">Pooja window: 7:00 AM - 7:00 PM</Typography>
+              <Typography variant="body2" color="var(--footer-text)">Helpline: +91 9XXXXXXXXX</Typography>
+              <Typography variant="body2" color="var(--footer-text)">Email: support@matabooking.in</Typography>
+            </Stack>
+          </Box>
+        </Stack>
+
+        <Divider sx={{ my: 3, borderColor: 'var(--footer-divider)' }} />
+
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', md: 'center' }} justifyContent="space-between">
+          <Typography variant="body2" color="var(--footer-text)">
+            Â© 2026 à¤®à¤¾à¤¤à¤¾ à¤ªà¥‚à¤œà¤¾ à¤¬à¥à¤•à¤¿à¤‚à¤— | Mata Pooja Booking. All rights reserved.
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ fontFamily: "'Noto Sans Devanagari', 'serif'", mb: 2 }}>
-            जय माता दी 🙏 | Book Divine Blessings
+          <Typography variant="body2" color="var(--footer-text)">
+            Made with <FavoriteIcon sx={{ fontSize: 16, color: 'var(--brand-rose)', verticalAlign: 'middle', mx: 0.5 }} /> for temple bookings
           </Typography>
-        </Box>
+        </Stack>
 
-        <Divider sx={{ my: 3, borderColor: 'divider' }} />
-
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            © 2024 माता पूजा बुकिंग | Mata Pooja Booking. All rights reserved.
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Made with <FavoriteIcon sx={{ fontSize: 16, color: 'var(--red)', verticalAlign: 'middle', mx: 0.5 }} /> for temple bookings
-          </Typography>
-        </Box>
-
-        <Divider sx={{ my: 3, borderColor: 'divider' }} />
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
-          <Link href="/about" color="text.secondary" variant="body2" underline="hover">
-            About
-          </Link>
-          <Link href="/contact" color="text.secondary" variant="body2" underline="hover">
-            Contact
-          </Link>
-          <Link href="/privacy" color="text.secondary" variant="body2" underline="hover">
-            Privacy
-          </Link>
-          <Link href="/terms" color="text.secondary" variant="body2" underline="hover">
-            Terms
-          </Link>
-        </Box>
-
-        <Typography variant="caption" color="text.disabled" sx={{ mt: 4, display: 'block' }}>
-          Temple bookings made simple ✨
+        <Typography variant="caption" color="var(--footer-text)" sx={{ mt: 3, display: 'block' }}>
+          Temple bookings made simple âœ¨
         </Typography>
       </Container>
     </motion.footer>

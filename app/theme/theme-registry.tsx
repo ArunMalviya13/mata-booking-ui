@@ -12,47 +12,59 @@ export const baseTheme = createTheme({
   palette: {
     mode: 'light' as const,
     primary: {
-      main: '#1e40af', // Blue primary
-      light: '#3b82f6',
-      dark: '#1e3a8a',
-      contrastText: '#FFFFFF',
+      main: '#0f5b78',
+      light: '#1fa6b2',
+      dark: '#0b2a3c',
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: '#dc2626', // Red accent
-      light: '#ef4444',
-      dark: '#b91c1c',
-      contrastText: '#FFFFFF',
+      main: '#f2c14e',
+      light: '#f6d27b',
+      dark: '#d8a73f',
+      contrastText: '#0b1216',
     },
     background: {
-      default: '#FFFFFF',
-      paper: '#FFFFFF',
+      default: '#f7f8fa',
+      paper: '#ffffff',
     },
     text: {
-      primary: '#000000', // Black
-      secondary: '#333333',
+      primary: '#0b1216',
+      secondary: '#2b3a42',
     },
     error: {
-      main: '#dc2626',
+      main: '#d76d77',
     },
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 14,
   },
   typography: {
-    fontFamily: 'var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif',
+    fontFamily: 'var(--font-sora), system-ui, sans-serif',
+    h1: {
+      fontFamily: 'var(--font-fraunces), serif',
+      fontWeight: 600,
+    },
+    h2: {
+      fontFamily: 'var(--font-fraunces), serif',
+      fontWeight: 600,
+    },
+    h3: {
+      fontFamily: 'var(--font-fraunces), serif',
+      fontWeight: 600,
+    },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 10,
           textTransform: 'none',
-          boxShadow: '0 2px 8px rgb(0 0 0 / 12%)',
+          boxShadow: '0 10px 24px rgb(11 18 22 / 12%)',
           transition: 'all 0.3s cubic-bezier(.4,0,.2,1)',
-          fontWeight: 500,
+          fontWeight: 600,
           '&:hover': {
-            boxShadow: '0 4px 12px rgb(0 0 0 / 16%)',
-            transform: 'translateY(-1px)',
+            boxShadow: '0 16px 32px rgb(11 18 22 / 16%)',
+            transform: 'translateY(-2px)',
           },
         },
       },
@@ -67,11 +79,11 @@ export const baseTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          boxShadow: '0 4px 20px rgb(0 0 0 / 8%)',
-          border: '1px solid rgb(0 0 0 / 4%)',
+          borderRadius: 18,
+          boxShadow: '0 18px 48px rgb(11 18 22 / 12%)',
+          border: '1px solid rgb(11 18 22 / 6%)',
           '&:hover': {
-            boxShadow: '0 8px 32px rgb(0 0 0 / 12%)',
+            boxShadow: '0 24px 60px rgb(11 18 22 / 18%)',
           },
         },
       },
@@ -91,24 +103,72 @@ function MuiThemeWrapper({ children }: { children: React.ReactNode }) {
 
   const themeOverrides = mode === 'dark' ? {
     palette: {
+      primary: {
+        main: '#3cc4d0',
+        light: '#6fe0ea',
+        dark: '#1a7b8d',
+        contrastText: '#0b1115',
+      },
+      secondary: {
+        main: '#f2c14e',
+        light: '#f6d27b',
+        dark: '#d8a73f',
+        contrastText: '#0b1115',
+      },
       background: {
-        default: '#111111',
-        paper: '#1a1a1a',
+        default: '#0b1115',
+        paper: '#0f1a20',
       },
       text: {
-        primary: '#FFFFFF',
-        secondary: '#CCCCCC',
+        primary: '#eef5f8',
+        secondary: '#c3d0d8',
       },
     },
     components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            color: '#eef5f8',
+            '&.Mui-disabled': {
+              color: 'rgba(238, 245, 248, 0.7)',
+              backgroundColor: 'rgba(238, 245, 248, 0.18)',
+            },
+          },
+          contained: {
+            color: '#0b1115',
+          },
+          outlined: {
+            borderColor: 'rgb(238 245 248 / 45%)',
+            color: '#eef5f8',
+            '&:hover': {
+              borderColor: 'rgb(238 245 248 / 70%)',
+              backgroundColor: 'rgb(238 245 248 / 8%)',
+            },
+          },
+        },
+      },
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            backgroundColor: '#2a2a2a',
-            color: '#FFFFFF',
+            backgroundColor: '#14232b',
+            color: '#eef5f8',
             '& fieldset': {
-              borderColor: 'rgb(255 255 255 / 20%)',
+              borderColor: 'rgb(238 245 248 / 20%)',
             },
+          },
+        },
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            color: '#c3d0d8',
+          },
+        },
+      },
+      MuiFormHelperText: {
+        styleOverrides: {
+          root: {
+            color: '#9fb1bb',
           },
         },
       },
@@ -116,21 +176,21 @@ function MuiThemeWrapper({ children }: { children: React.ReactNode }) {
   } : {
     palette: {
       background: {
-        default: '#FFFFFF',
-        paper: '#FFFFFF',
+        default: '#f7f8fa',
+        paper: '#ffffff',
       },
       text: {
-        primary: '#000000',
-        secondary: '#333333',
+        primary: '#0b1216',
+        secondary: '#2b3a42',
       },
     },
     components: {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            backgroundColor: '#F5F5F5',
+            backgroundColor: '#eef2f5',
             '& fieldset': {
-              borderColor: 'rgb(0 0 0 / 12%)',
+              borderColor: 'rgb(11 18 22 / 12%)',
             },
           },
         },

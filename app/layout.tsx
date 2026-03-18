@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Sora } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
 });
 
@@ -29,10 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen divine-hero flex flex-col container`}>
+      <body suppressHydrationWarning className={`${sora.variable} ${fraunces.variable} antialiased min-h-screen enterprise-shell flex flex-col`}>
         <ThemeRegistry>
           <Header />
-          <main className="flex-grow px-4 py-12 sm:py-16 md:py-20 lg:py-24 section-padding">
+          <main className="flex-grow px-4 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
             {children}
           </main>
           <Footer />

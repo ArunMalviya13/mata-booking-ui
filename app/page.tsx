@@ -9,7 +9,9 @@ import {
   CardContent,
   CircularProgress,
   Container,
+  Grid,
   Link,
+  Stack,
   Typography
 } from "@mui/material";
 import toast from "react-hot-toast";
@@ -117,138 +119,151 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Box sx={{ textAlign: "center", mb: 8, px: { xs: 2, md: 0 } }}>
-          <Typography
-            className="heading-1"
-            gutterBottom
-            component="h1"
-            sx={{
-              background: "linear-gradient(45deg, hsl(var(--blue)), hsl(var(--blue-light)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: "-0.025em",
-              mb: 3
-            }}
-          >
-            🛕 माता पूजा बुकिंग | Mata Pooja Booking
-          </Typography>
+        <Grid container spacing={4} alignItems="center">
+          <Grid item xs={12} md={6}>
+            <Stack spacing={3} sx={{ px: { xs: 1, md: 0 } }}>
+              <Typography
+                className="heading-1 hero-title"
+                component="h1"
+                gutterBottom
+              >
+                🛕 माता पूजा बुकिंग | Mata Pooja Booking
+              </Typography>
 
-          <Typography
-            variant="h4"
-            color="text.primary"
-            sx={{
-              mb: 6,
-              fontWeight: 300,
-              maxWidth: "600px",
-              mx: "auto",
-              lineHeight: 1.4,
-              fontSize: { xs: '1.5rem', md: '1.875rem' }
-            }}
-          >
-            Book Divine Blessings with Ease <br />
-            <span className="heading-2" style={{ color: 'hsl(var(--red))' }}>जय माता दी 🙏</span>
-          </Typography>
+              <Typography
+                variant="h5"
+                className="hero-subtitle"
+                sx={{ maxWidth: 520 }}
+              >
+                <br />
+                <span className="heading-2" style={{ color: 'var(--brand-ocean)' }}>जय माता दी 🙏</span>
+              </Typography>
 
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            <Button
-              component={Link}
-              href="/poojas"
-              variant="outlined"
-              size="large"
-              sx={{
-                px: 4,
-                py: 1.5,
-                fontSize: '1.1rem',
-                borderWidth: 2,
-                fontWeight: 600,
-                className: 'card-hover'
-              }}
+              <Stack direction="row" spacing={1.5} flexWrap="wrap">
+                <span className="stat-chip">Secure scheduling</span>
+                <span className="stat-chip">Live availability</span>
+                <span className="stat-chip">Instant confirmations</span>
+              </Stack>
+
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                <Button
+                  component={Link}
+                  href="/poojas"
+                  variant="contained"
+                  size="large"
+                  sx={{ px: 4, py: 1.6, fontSize: '1.05rem' }}
+                >
+                  Explore Poojas
+                </Button>
+                <Button
+                  component={Link}
+                  href="/my-bookings"
+                  variant="outlined"
+                  size="large"
+                  sx={{ px: 4, py: 1.6, fontSize: '1.05rem' }}
+                >
+                  View My Bookings
+                </Button>
+              </Stack>
+
+              <Typography variant="body2" color="text.secondary">
+                Trusted by devotees across regions for organized temple rituals.
+              </Typography>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
             >
-              Explore Poojas →
-            </Button>
-          </motion.div>
-        </Box>
+              <Card className="glass-card" sx={{ p: { xs: 1, md: 2 } }}>
+                <CardContent>
+                  <Typography variant="h4" gutterBottom textAlign="center">
+                    <CalendarTodayIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: 28 }} />
+                    Select Pooja Date
+                  </Typography>
 
+                  {!userLoading ? (
+                    <>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          mb: 3,
+                          textAlign: 'center',
+                          color: currentUser ? 'success.main' : 'text.secondary',
+                          fontStyle: authError ? 'italic' : 'normal'
+                        }}
+                      >
+                        {authError ? '⚠️ Auth service unavailable - View-only mode' : !currentUser ? '👋 Guest mode - Login to book dates' : '✅ Logged in - Select your Pooja date'}
+                      </Typography>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateCalendar
+                          value={selectedDate}
+                          onChange={handleDateSelect}
+                          disablePast
+                          readOnly={!currentUser}
+                          slots={{
+                            day: (props: PickersDayProps) => {
+                              const isBooked = props.day && isDateBooked(props.day);
+                              return (
+                                <motion.div
+                                  whileHover={currentUser ? { scale: 1.05 } : {}}
+                                  whileTap={currentUser ? { scale: 0.95 } : {}}
+                                >
+                                  <PickersDay
+                                    {...props}
+                                    sx={{
+                                      ...(props.sx || {}),
+                                      backgroundColor: isBooked ? "primary.main !important" : undefined,
+                                      color: isBooked ? "white !important" : undefined,
+                                      fontWeight: isBooked ? "bold" : "normal",
+                                      cursor: currentUser ? 'pointer' : 'default',
+                                    }}
+                                  />
+                                </motion.div>
+                              );
+                            },
+                          }}
+                        />
+                      </LocalizationProvider>
+                    </>
+                  ) : (
+                    <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+                      <CircularProgress size={40} />
+                      <Typography sx={{ ml: 2 }}>Loading calendar...</Typography>
+                    </Box>
+                  )}
 
-        <Card sx={{ maxWidth: 600, mx: "auto", mb: 6, p: 3 }}>
-          <CardContent>
-            <Typography variant="h4" gutterBottom textAlign="center">
-              <CalendarTodayIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: 28 }} />
-              Select Pooja Date
-            </Typography>
-
-            {!userLoading ? (
-              <>
-                <Typography variant="body1" sx={{ mb: 3, textAlign: 'center', color: currentUser ? 'success.main' : 'text.secondary', fontStyle: authError ? 'italic' : 'normal' }}>
-                  {authError ? '⚠️ Auth service unavailable - View-only mode' : !currentUser ? '👋 Guest mode - Login to book dates' : '✅ Logged in - Select your Pooja date'}
-                </Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateCalendar
-                    value={selectedDate}
-                    onChange={handleDateSelect}
-                    disablePast
-                    readOnly={!currentUser}
-                    slots={{
-                      day: (props: PickersDayProps) => {
-                        const isBooked = props.day && isDateBooked(props.day);
-                        return (
-                          <motion.div
-                            whileHover={currentUser ? { scale: 1.05 } : {}}
-                            whileTap={currentUser ? { scale: 0.95 } : {}}
-                          >
-                            <PickersDay
-                              {...props}
-                              sx={{
-                                ...(props.sx || {}),
-                                backgroundColor: isBooked ? "primary.main !important" : undefined,
-                                color: isBooked ? "white !important" : undefined,
-                                fontWeight: isBooked ? "bold" : "normal",
-                                cursor: currentUser ? 'pointer' : 'default',
-                              }}
-                            />
-                          </motion.div>
-                        );
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </>
-            ) : (
-              <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-                <CircularProgress size={40} />
-                <Typography sx={{ ml: 2 }}>Loading calendar...</Typography>
-              </Box>
-            )}
-          </CardContent>
-        </Card>
+                  <Box sx={{ textAlign: "center", mt: 3 }}>
+                    <Button
+                      variant="contained"
+                      size="large"
+                      onClick={handleBook}
+                      disabled={!currentUser || !selectedDate || loading}
+                      startIcon={<CalendarTodayIcon />}
+                      sx={{ minWidth: 220, fontSize: "1.05rem" }}
+                    >
+                      {!currentUser ? "Login to Book" : "Book Pooja Slot"}
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+        </Grid>
 
         {selectedDate && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Alert severity="info" sx={{ maxWidth: 400, mx: "auto", mb: 4 }}>
+            <Alert severity="info" sx={{ maxWidth: 420, mx: "auto", my: 4 }}>
               Selected: {selectedDate.format("MMMM DD, YYYY")}
             </Alert>
           </motion.div>
         )}
 
-        <Box sx={{ textAlign: "center" }}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={handleBook}
-            disabled={!currentUser || !selectedDate || loading}
-            startIcon={<CalendarTodayIcon />}
-            sx={{ minWidth: 200, fontSize: "1.1rem" }}
-          >
-            {!currentUser ? "Login to Book" : "Book Pooja Slot"}
-          </Button>
-        </Box>
-
         {bookings.length > 0 && (
-          <Card sx={{ mt: 8, p: 3 }}>
+          <Card className="glass-card" sx={{ mt: 8, p: 3 }}>
             <Typography variant="h5" gutterBottom>
               Recent Bookings
             </Typography>
@@ -271,4 +286,3 @@ export default function Home() {
     </Container>
   );
 }
-
