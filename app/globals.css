@@ -1,8 +1,28 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap');
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Restricted Palette: Black, White, Blue, Red */
+  --black: #000000;
+  --blue: #1e40af;
+  --blue-light: #3b82f6;
+  --white: #FFFFFF;
+  --red: #dc2626;
+  --red-light: #ef4444;
+  --glow-red: rgba(220, 38, 38, 0.3);
+  --glow-blue: rgba(30, 64, 175, 0.3);
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+[data-theme='dark'] {
+  --background: #0f0a0a;
+  --foreground: #f8f4e9;
 }
 
 @theme inline {
@@ -12,15 +32,215 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(to bottom right, var(--white), #f8fafc 90%, var(--background));
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  font-feature-settings: 'rlig' 1, 'calt' 1;
+  position: relative;
+  overflow-x: hidden;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  line-height: 1.6;
 }
+
+/* Responsive Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Responsive Body Padding */
+@media (max-width: 639px) {
+  body { 
+    padding-top: 1rem; 
+    padding-bottom: 2rem; 
+  }
+}
+
+@media (min-width: 640px) {
+  body { 
+    padding-top: 2rem; 
+    padding-bottom: 3rem; 
+  }
+}
+
+@media (min-width: 1024px) {
+  body { 
+    padding-top: 3rem; 
+    padding-bottom: 4rem; 
+  }
+}
+
+/* Rangoli Pattern - Responsive */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.05;
+  background-image: 
+    radial-gradient(circle at 10% 20%, hsl(var(--blue)) 1px, transparent 1px),
+    radial-gradient(circle at 90% 80%, hsl(var(--red)) 1px, transparent 1px);
+  background-size: clamp(30px, 5vw, 60px);
+}
+
+/* Enhanced Animations */
+@keyframes floatDiya {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  33% { transform: translateY(-15px) rotate(3deg) scale(1.05); }
+  66% { transform: translateY(-25px) rotate(-2deg) scale(0.95); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: var(--shadow-lg); }
+  50% { box-shadow: var(--shadow-2xl), 0 0 20px var(--glow-blue); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -468px 0; }
+  100% { background-position: 468px 0; }
+}
+
+.divine-hero {
+  position: relative;
+}
+
+.divine-hero::after {
+  content: '🪔';
+  position: absolute;
+  top: 25%;
+  right: 1rem;
+  font-size: 1.5rem;
+  animation: floatDiya 8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 1rem var(--glow-saffron));
+  z-index: 10;
+  pointer-events: none;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  .divine-hero::after {
+    font-size: 2.25rem;
+    right: 1rem;
+  }
+}
+
+/* Card Hover Enhancements */
+.card-hover {
+  transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-12px);
+  box-shadow: var(--shadow-2xl);
+}
+
+/* Responsive Typography Scale */
+.heading-1 {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 768px) {
+  .heading-1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-1 {
+    font-size: clamp(3rem, 5.5vw, 5rem);
+  }
+}
+
+.heading-2 {
+  font-size: clamp(1.875rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .heading-2 {
+    font-size: clamp(2.25rem, 4vw, 4rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-2 {
+    font-size: clamp(2.5rem, 4.5vw, 5rem);
+  }
+}
+
+.section-padding {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* Dark Mode Specific */
+[data-theme='dark'] .divine-hero::after {
+  filter: drop-shadow(0 0 15px var(--glow-blue));
+}
+
+/* Loading Shimmer */
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+[data-theme='dark'] .shimmer {
+  background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%);
+}
+

@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { Typography, Container, Button, Card, CardContent, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Alert, CircularProgress } from '@mui/material';
-import { motion } from 'framer-motion';
-import { Trash2, Clock, CheckCircle, XCircle } from 'lucide-react';
-import { getCurrentUser, getUserBookings, deleteBooking } from '../../lib/utils';
+import { Alert, Box, Button, Card, CardContent, Chip, CircularProgress, Container, IconButton, List, ListItem, ListItemSecondaryAction, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import dayjs from 'dayjs';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { deleteBooking, getCurrentUser, getUserBookings } from '../../lib/utils';
 
 export default function MyBookings() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -61,57 +64,103 @@ export default function MyBookings() {
   }
 
   return (
-    <Container maxWidth="md">
-      <motion.div 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
-        transition={{ duration: 0.5 }}
+    <Container maxWidth="md" sx={{ py: [3, 4, 5, 6] }}>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Typography variant="h3" gutterBottom textAlign="center" sx={{ mt: 4, mb: 6 }}>
+        <Typography
+          className="heading-2"
+          gutterBottom
+          textAlign="center"
+          sx={{ mb: 8, color: 'var(--saffron)' }}
+          component="h1"
+        >
           My Bookings
         </Typography>
 
         {user ? (
           <>
-            <Typography variant="h6" color="text.secondary" textAlign="center" mb={4}>
-              Welcome, {user.email}
+            <Typography
+              variant="h5"
+              color="text.secondary"
+              textAlign="center"
+              mb={6}
+              sx={{
+                fontWeight: 300,
+                fontSize: { xs: '1.25rem', md: '1.5rem' }
+              }}
+            >
+              Welcome back, {user.email}
             </Typography>
 
             {bookings.length === 0 ? (
-              <Alert severity="info" sx={{ mt: 4 }}>
-                No bookings yet. <Button onClick={() => router.push('/')}>Book Now</Button>
-              </Alert>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0.7 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Alert severity="info" sx={{ mt: 4, px: 4, py: 3 }}>
+                  <Typography variant="h6" gutterBottom>
+                    No bookings yet
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Ready to book your divine pooja?
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    onClick={() => router.push('/')}
+                    sx={{ mt: 2, px: 4 }}
+                  >
+                    Book Now
+                  </Button>
+                </Alert>
+              </motion.div>
             ) : (
-              <Card sx={{ mb: 4 }}>
-                <CardContent>
-                  <List>
-                    {bookings.map((booking) => (
-                      <ListItem key={booking.id} divider>
-                        <ListItemText
-                          primary={`Pooja on ${dayjs(booking.booking_date).format('MMMM DD, YYYY')}`}
-                          secondary={
-                            <>
+              <Card sx={{ mb: 4, boxShadow: 'var(--shadow-xl)' }} className="card-hover">
+                <CardContent sx={{ p: 0 }}>
+                  <Box sx={{ p: 4, pb: `calc(${8}px + 0.5vw)` }}>
+                    <Typography variant="h6" color="primary.main" gutterBottom fontWeight="bold">
+                      Your Active Bookings ({bookings.length})
+                    </Typography>
+                  </Box>
+                  <List sx={{ p: 0 }}>
+                    {bookings.map((booking, index) => (
+                      <motion.div key={booking.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}>
+                        <ListItem divider sx={{ px: 4, py: 3 }}>
+                          <Box sx={{ flex: 1 }}>
+                            <Typography variant="h6" fontWeight="medium">
+                              Pooja on {dayjs(booking.booking_date).format('MMMM DD, YYYY')}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
                               ID: {booking.id.substring(0, 8)}...
-                              <br />
-                              Status: <strong>{booking.status || 'pending'}</strong>
-                            </>
-                          }
-                        />
-                        <ListItemSecondaryAction>
-                          {booking.status === 'pending' && (
-                            <IconButton
-                              edge="end"
-                              onClick={() => handleCancel(booking.id)}
-                              disabled={deletingId === booking.id}
-                            >
-                              <Trash2 size={20} color="error.main" />
-                            </IconButton>
-                          )}
-                          {booking.status === 'pending' && <Clock size={20} color="warning.main" />}
-                          {booking.status === 'confirmed' && <CheckCircle size={20} color="success.main" />}
-                          {booking.status === 'rejected' && <XCircle size={20} color="error.main" />}
-                        </ListItemSecondaryAction>
-                      </ListItem>
+                            </Typography>
+                            <Chip
+                              label={booking.status || 'pending'}
+                              size="small"
+                              sx={{ mt: 1, fontWeight: 600 }}
+                              color={booking.status === 'confirmed' ? 'success' : booking.status === 'rejected' ? 'error' : 'warning'}
+                            />
+                          </Box>
+                          <ListItemSecondaryAction sx={{ alignSelf: 'flex-start' }}>
+                            {booking.status === 'pending' && (
+                              <IconButton
+                                edge="end"
+                                onClick={() => handleCancel(booking.id)}
+                                disabled={deletingId === booking.id}
+                                color="error"
+                                sx={{ mr: 1 }}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            )}
+                            {booking.status === 'pending' && <ScheduleIcon sx={{ fontSize: 20, color: 'warning.main' }} />}
+                            {booking.status === 'confirmed' && <CheckCircleIcon sx={{ fontSize: 20, color: 'success.main' }} />}
+                            {booking.status === 'rejected' && <CancelIcon sx={{ fontSize: 20, color: 'error.main' }} />}
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      </motion.div>
                     ))}
                   </List>
                 </CardContent>
@@ -119,9 +168,26 @@ export default function MyBookings() {
             )}
           </>
         ) : (
-          <Alert severity="warning" sx={{ mt: 8 }}>
-            Please <Button onClick={() => router.push('/')}>login</Button> to view your bookings.
-          </Alert>
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+          >
+            <Alert severity="warning" sx={{ mt: 8, px: 4, py: 4 }}>
+              <Typography variant="h6" gutterBottom>
+                Login Required
+              </Typography>
+              <Typography color="text.secondary" mb={3}>
+                Please login to view your bookings
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={() => router.push('/')}
+                sx={{ px: 4 }}
+              >
+                Go to Home & Login
+              </Button>
+            </Alert>
+          </motion.div>
         )}
       </motion.div>
     </Container>

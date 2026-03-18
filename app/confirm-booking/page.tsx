@@ -3,7 +3,8 @@
 import { Alert, Box, Button, Card, CardContent, CircularProgress, Container, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
-import { Calendar, CheckCircle } from 'lucide-react';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -18,7 +19,6 @@ export default function ConfirmBooking() {
   const [user, setUser] = useState<any>(null);
   const [bookedDates, setBookedDates] = useState<string[]>([]);
 
-
   useEffect(() => {
     const dateStr = params.date as string;
     const date = dayjs(dateStr);
@@ -30,7 +30,6 @@ export default function ConfirmBooking() {
     setBookingDate(dateStr);
     loadData(dateStr);
   }, [params.date, router]);
-
 
   const loadData = async (date: string) => {
     try {
@@ -63,13 +62,11 @@ export default function ConfirmBooking() {
       await createBooking(user.id, bookingDate);
       toast.success('Booking confirmed! Check My Bookings.');
       router.push('/my-bookings');
-
     } catch (error: any) {
       toast.error(error.message || 'Booking failed. Try again.');
     } finally {
       setLoading(false);
     }
-
   };
 
   if (!bookingDate) {
@@ -87,14 +84,14 @@ export default function ConfirmBooking() {
           <Card sx={{ p: 6, boxShadow: 'var(--shadow-xl)' }}>
             <CardContent>
               <Typography variant="h3" gutterBottom color="primary.main">
-                <CheckCircle style={{ verticalAlign: 'middle', marginRight: 2, fontSize: 48 }} />
+                <CheckCircleIcon sx={{ fontSize: 48, verticalAlign: 'middle', mr: 1 }} />
                 Confirm Booking
               </Typography>
               <Typography variant="h4" gutterBottom>
                 Pooja Slot
               </Typography>
               <Alert severity="success" sx={{ mb: 4, fontSize: '1.2rem' }}>
-                <Calendar style={{ marginRight: 1 }} />
+                <CalendarTodayIcon sx={{ mr: 1, fontSize: 24 }} />
                 {dayjs(bookingDate).format('dddd, MMMM DD, YYYY')}
               </Alert>
 

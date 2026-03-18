@@ -1,5 +1,6 @@
 "use client";
 
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import {
   Alert,
   Box,
@@ -8,6 +9,7 @@ import {
   CardContent,
   CircularProgress,
   Container,
+  Link,
   Typography
 } from "@mui/material";
 import toast from "react-hot-toast";
@@ -22,11 +24,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import dayjs, { Dayjs } from "dayjs";
 import { motion } from "framer-motion";
-import { Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-import { getCurrentUser, getAllBookings } from "../lib/utils";
+import { getAllBookings, getCurrentUser } from "../lib/utils";
 
 export default function Home() {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
@@ -42,7 +42,7 @@ export default function Home() {
       try {
         const user = await Promise.race([
           getCurrentUser(),
-          new Promise((_, reject) => 
+          new Promise((_, reject) =>
             setTimeout(() => reject(new Error("Auth timeout")), 5000)
           )
         ]);
@@ -111,36 +111,73 @@ export default function Home() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ py: [3, 4, 5, 6] }}>
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Box sx={{ textAlign: "center", mb: 8, px: { xs: 2, md: 0 } }}>
           <Typography
-            variant="h2"
+            className="heading-1"
             gutterBottom
-            fontWeight="bold"
+            component="h1"
             sx={{
-              background:
-                "linear-gradient(45deg, var(--primary), var(--primary-dark))",
+              background: "linear-gradient(45deg, hsl(var(--blue)), hsl(var(--blue-light)))",
               WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent"
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "-0.025em",
+              mb: 3
             }}
           >
-            🛕 Mata Pooja Booking
+            🛕 माता पूजा बुकिंग | Mata Pooja Booking
           </Typography>
 
-          <Typography variant="h5" color="text.secondary" mb={4}>
-            Book your divine pooja slot with ease
+          <Typography
+            variant="h4"
+            color="text.primary"
+            sx={{
+              mb: 6,
+              fontWeight: 300,
+              maxWidth: "600px",
+              mx: "auto",
+              lineHeight: 1.4,
+              fontSize: { xs: '1.5rem', md: '1.875rem' }
+            }}
+          >
+            Book Divine Blessings with Ease <br />
+            <span className="heading-2" style={{ color: 'hsl(var(--red))' }}>जय माता दी 🙏</span>
           </Typography>
+
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <Button
+              component={Link}
+              href="/poojas"
+              variant="outlined"
+              size="large"
+              sx={{
+                px: 4,
+                py: 1.5,
+                fontSize: '1.1rem',
+                borderWidth: 2,
+                fontWeight: 600,
+                className: 'card-hover'
+              }}
+            >
+              Explore Poojas →
+            </Button>
+          </motion.div>
         </Box>
+
 
         <Card sx={{ maxWidth: 600, mx: "auto", mb: 6, p: 3 }}>
           <CardContent>
             <Typography variant="h4" gutterBottom textAlign="center">
-              <Calendar style={{ verticalAlign: "middle", marginRight: 8 }} />
+              <CalendarTodayIcon sx={{ verticalAlign: 'middle', mr: 1, fontSize: 28 }} />
               Select Pooja Date
             </Typography>
 
@@ -159,15 +196,15 @@ export default function Home() {
                       day: (props: PickersDayProps) => {
                         const isBooked = props.day && isDateBooked(props.day);
                         return (
-                          <motion.div 
-                            whileHover={currentUser ? { scale: 1.05 } : {}} 
+                          <motion.div
+                            whileHover={currentUser ? { scale: 1.05 } : {}}
                             whileTap={currentUser ? { scale: 0.95 } : {}}
                           >
                             <PickersDay
                               {...props}
                               sx={{
                                 ...(props.sx || {}),
-                                backgroundColor: isBooked ? "error.main !important" : undefined,
+                                backgroundColor: isBooked ? "primary.main !important" : undefined,
                                 color: isBooked ? "white !important" : undefined,
                                 fontWeight: isBooked ? "bold" : "normal",
                                 cursor: currentUser ? 'pointer' : 'default',
@@ -203,7 +240,7 @@ export default function Home() {
             size="large"
             onClick={handleBook}
             disabled={!currentUser || !selectedDate || loading}
-            startIcon={<Calendar />}
+            startIcon={<CalendarTodayIcon />}
             sx={{ minWidth: 200, fontSize: "1.1rem" }}
           >
             {!currentUser ? "Login to Book" : "Book Pooja Slot"}
@@ -234,3 +271,4 @@ export default function Home() {
     </Container>
   );
 }
+

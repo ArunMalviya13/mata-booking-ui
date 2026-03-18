@@ -1,9 +1,10 @@
 "use client";
 
 import { Alert, Box, Button, Card, CardContent, CircularProgress, Container, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
-import { Calendar, CheckCircle } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -87,14 +88,14 @@ export default function ConfirmBooking() {
           <Card sx={{ p: 6, boxShadow: 'var(--shadow-xl)' }}>
             <CardContent>
               <Typography variant="h3" gutterBottom color="primary.main">
-                <CheckCircle style={{ verticalAlign: 'middle', marginRight: 2, fontSize: 48 }} />
+                <CheckCircleIcon sx={{ fontSize: 48, verticalAlign: 'middle', mr: 1 }} />
                 Confirm Booking
               </Typography>
               <Typography variant="h4" gutterBottom>
                 Pooja Slot
               </Typography>
               <Alert severity="success" sx={{ mb: 4, fontSize: '1.2rem' }}>
-                <Calendar style={{ marginRight: 1 }} />
+                <CalendarTodayIcon sx={{ mr: 1, fontSize: 24 }} />
                 {dayjs(bookingDate).format('dddd, MMMM DD, YYYY')}
               </Alert>
 
@@ -130,3 +131,4 @@ export default function ConfirmBooking() {
     </Container>
   );
 }
+

@@ -17,12 +17,10 @@ export const metadata: Metadata = {
   description: "Book your divine pooja slot with ease at Mata Temple",
 };
 
-import Footer from './components/footer';
-import Header from './components/header';
-import './globals.css';
 import ThemeRegistry from './theme/theme-registry';
-// import { GeistSans, GeistMono } from 'geist/font';
-
+import Header from './components/header';
+import Footer from './components/footer';
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -31,10 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-<body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen divine-hero flex flex-col container`}>
         <ThemeRegistry>
           <Header />
-          <main className="flex-grow container mx-auto px-4 py-8">
+          <main className="flex-grow px-4 py-12 sm:py-16 md:py-20 lg:py-24 section-padding">
             {children}
           </main>
           <Footer />

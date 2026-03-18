@@ -1,38 +1,38 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-
-import { ThemeProvider as MUIThemeProvider, createTheme, type Theme } from '@mui/material/styles';
-
-import { useColorScheme } from '@mui/material/styles';
+import React from 'react';
+import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaselineExtended from './css-baseline-extended';
+import { ThemeProvider, useThemeContext } from './theme-context';
 
 declare module '@mui/material/styles' {
-  interface Palette {
-    accent: Palette['primary'];
-  }
-  interface PaletteOptions {
-    accent?: PaletteOptions['primary'];
-  }
 }
 
-export const theme = createTheme({
+export const baseTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'light' as const,
     primary: {
-      main: '#d4a017', // Gold
+      main: '#1e40af', // Blue primary
+      light: '#3b82f6',
+      dark: '#1e3a8a',
+      contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#f8f4e6',
+      main: '#dc2626', // Red accent
+      light: '#ef4444',
+      dark: '#b91c1c',
+      contrastText: '#FFFFFF',
     },
     background: {
-      default: '#ffffff',
+      default: '#FFFFFF',
+      paper: '#FFFFFF',
+    },
+    text: {
+      primary: '#000000', // Black
+      secondary: '#333333',
     },
     error: {
-      main: '#e74c3c', // Red for booked
-    },
-    accent: {
-      main: '#e74c3c',
+      main: '#dc2626',
     },
   },
   shape: {
@@ -47,11 +47,12 @@ export const theme = createTheme({
         root: {
           borderRadius: 8,
           textTransform: 'none',
-          boxShadow: 'var(--shadow-lg)',
-          transition: 'all 0.3s ease',
+          boxShadow: '0 2px 8px rgb(0 0 0 / 12%)',
+          transition: 'all 0.3s cubic-bezier(.4,0,.2,1)',
+          fontWeight: 500,
           '&:hover': {
-            boxShadow: 'var(--shadow-xl)',
-            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 12px rgb(0 0 0 / 16%)',
+            transform: 'translateY(-1px)',
           },
         },
       },
@@ -59,35 +60,98 @@ export const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          boxShadow: 'var(--shadow-lg)',
+          backgroundImage: 'none',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          boxShadow: '0 4px 20px rgb(0 0 0 / 8%)',
+          border: '1px solid rgb(0 0 0 / 4%)',
+          '&:hover': {
+            boxShadow: '0 8px 32px rgb(0 0 0 / 12%)',
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
         },
       },
     },
   },
 });
 
-export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
-  const colorSchemeValue = useColorScheme();
-  const colorScheme = colorSchemeValue as unknown as 'light' | 'dark' | null;
+function MuiThemeWrapper({ children }: { children: React.ReactNode }) {
+  const { mode } = useThemeContext();
 
-
-  useEffect(() => {
-    if (colorScheme === 'dark') setMode('dark');
-    else if (colorScheme === 'light') setMode('light');
-  }, [colorScheme]);
-
+  const themeOverrides = mode === 'dark' ? {
+    palette: {
+      background: {
+        default: '#111111',
+        paper: '#1a1a1a',
+      },
+      text: {
+        primary: '#FFFFFF',
+        secondary: '#CCCCCC',
+      },
+    },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            backgroundColor: '#2a2a2a',
+            color: '#FFFFFF',
+            '& fieldset': {
+              borderColor: 'rgb(255 255 255 / 20%)',
+            },
+          },
+        },
+      },
+    },
+  } : {
+    palette: {
+      background: {
+        default: '#FFFFFF',
+        paper: '#FFFFFF',
+      },
+      text: {
+        primary: '#000000',
+        secondary: '#333333',
+      },
+    },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            backgroundColor: '#F5F5F5',
+            '& fieldset': {
+              borderColor: 'rgb(0 0 0 / 12%)',
+            },
+          },
+        },
+      },
+    },
+  };
 
   const muiTheme = React.useMemo(
-    () =>
-      createTheme({
-        ...theme,
-        palette: {
-          ...theme.palette,
-          mode,
-        },
-      }),
-    [mode],
+    () => createTheme({
+      ...baseTheme,
+      palette: {
+        ...baseTheme.palette,
+        mode,
+        ...themeOverrides.palette,
+      },
+      components: {
+        ...baseTheme.components,
+        ...themeOverrides.components,
+      },
+    }),
+    [mode, themeOverrides]
   );
 
   return (
@@ -95,6 +159,16 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
       <CssBaselineExtended />
       {children}
     </MUIThemeProvider>
+  );
+}
+
+export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider>
+      <MuiThemeWrapper>
+        {children}
+      </MuiThemeWrapper>
+    </ThemeProvider>
   );
 }
 

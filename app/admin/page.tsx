@@ -1,9 +1,11 @@
 "use client";
 
 import { Alert, Button, Card, CardContent, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Cancel';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
-import { Edit2, Plus, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
@@ -140,7 +142,7 @@ export default function AdminPanel() {
         </Typography>
         <Button
           variant="contained"
-          startIcon={<Plus />}
+          startIcon={<AddIcon />}
           onClick={openEditDialog}
           sx={{ mb: 3 }}
         >
@@ -176,13 +178,11 @@ export default function AdminPanel() {
                         <TableCell>
                           {booking.status !== 'rejected' && (
                             <IconButton color="error" onClick={() => handleReject(booking.id)} disabled={rejectingId === booking.id}>
-                              <XCircle size={18}
-                                xlinkTitle='Reject Booking'
-                              />
+                              <CancelIcon fontSize="small" />
                             </IconButton>
                           )}
                           <IconButton color="primary" onClick={() => handleEdit(booking as Booking)}>
-                            <Edit2 size={18} />
+                            <EditIcon fontSize="small" />
                           </IconButton>
                         </TableCell>
                       </TableRow>
