@@ -1,10 +1,11 @@
 "use client";
 
-import { AppBar, Box, Button, Drawer, IconButton, Toolbar, Typography, useMediaQuery } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Brightness6Icon from '@mui/icons-material/Brightness6';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, Button, Drawer, IconButton, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { isAdmin } from '../../lib/utils';
@@ -24,6 +25,8 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 900px)');
   const { mode, toggleTheme } = useThemeContext();
+
+  const pathname = usePathname();
 
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user } }) => {
@@ -58,14 +61,37 @@ export default function Header() {
           component={Link}
           href={item.href}
           fullWidth
-          sx={{ justifyContent: 'flex-start', my: 1 }}
+          sx={{
+            justifyContent: 'flex-start',
+            my: 1,
+            ...(pathname === item.href && {
+              fontWeight: 700,
+              backgroundColor: 'rgba(255,255,255,0.5)',
+              borderRadius: 4,
+              px: 1
+            })
+          }}
           onClick={handleDrawerToggle}
         >
           {item.label}
         </Button>
       ))}
       {isAdminUser && (
-        <Button component={Link} href="/admin" fullWidth sx={{ my: 1, justifyContent: 'flex-start' }}>
+        <Button
+          component={Link}
+          href="/admin"
+          fullWidth
+          sx={{
+            my: 1,
+            justifyContent: 'flex-start',
+            ...(pathname === '/admin' && {
+              fontWeight: 700,
+              backgroundColor: 'rgba(255,255,255,0.5)',
+              borderRadius: 4,
+              px: 1
+            })
+          }}
+        >
           Admin
         </Button>
       )}
@@ -82,11 +108,13 @@ export default function Header() {
   );
 
   return (
-    <AppBar position="static" sx={{
-      background: 'var(--nav-gradient)',
-      boxShadow: 'var(--shadow-lg)',
-      zIndex: 1200
-    }}>
+    <AppBar position="static"
+      sx={{
+        background: 'var(--nav-gradient)',
+        boxShadow: 'var(--shadow-lg)',
+        zIndex: 1200
+      }}
+    >
       <Toolbar sx={{ justifyContent: 'space-between', gap: 1, px: { xs: 2, md: 6 } }}>
         <Typography variant="h6" component={Link} href="/" sx={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>
           🛕 Mata Pooja Booking
@@ -96,12 +124,37 @@ export default function Header() {
           {!isMobile ? (
             <>
               {navItems.map((item) => (
-                <Button key={item.href} color="inherit" component={Link} href={item.href}>
+                <Button
+                  key={item.href}
+                  color="inherit"
+                  component={Link}
+                  href={item.href}
+                  sx={{
+                    ...(pathname === item.href && {
+                      fontWeight: 700,
+                      backgroundColor: 'rgba(255,255,255,0.5)',
+                      borderRadius: 4,
+                      px: 1
+                    })
+                  }}
+                >
                   {item.label}
                 </Button>
               ))}
               {isAdminUser && (
-                <Button color="inherit" component={Link} href="/admin">
+                <Button
+                  color="inherit"
+                  component={Link}
+                  href="/admin"
+                  sx={{
+                    ...(pathname === '/admin' && {
+                      fontWeight: 700,
+                      backgroundColor: 'rgba(255,255,255,0.5)',
+                      borderRadius: 4,
+                      px: 1
+                    })
+                  }}
+                >
                   Admin
                 </Button>
               )}
